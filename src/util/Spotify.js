@@ -19,8 +19,8 @@ after this step, to enable npm run
 it requires to: If node_modules exists, remove it with rm -rf node_modules and then run npm install
 */
 
-const clientId = '8440181f40414325abb7c141cdc15564';//unique identifier of your application
-const redirectUri = 'http://localhost:3000/';
+const clientId = process.env.REACT_APP_CLIENT_ID;//unique identifier of your application
+const redirectUri = process.env.REACT_APP_REDIRECT_URL;
 const searchScope = 'playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative';//To be able to create private playlists, the user must have granted the  playlist-modify-private scope.
 //Private playlists are only retrievable for the current user and requires the playlist-read-private scope to have been authorized by the user.
 let accessToken = '';
@@ -33,7 +33,6 @@ const Spotify = {
     if(accessToken === ''){//the accessToken has not been set
       //accessToken and expire time are already on the url
       if(window.location.href.match(/access_token=([^&]*)/) && window.location.href.match(/expires_in=([^&]*)/)){
-        console.log("******case1******");
         //wipe the access token and URL parameters
         accessToken = decodeURIComponent(window.location.href.match(/access_token=([^&]*)/)).substring(13);//the match() method searches a string for a match against a regular expression, and returns  the matches, as an Array Object
 
@@ -63,12 +62,10 @@ const Spotify = {
         /***After user redirect on login, restoring the search term from before the redirect***/
         localStorage.setItem('searchedKeyWords', keyWords);//clear this key in SearchBar.js file
         window.location = requestUrl;
-        console.log("******case2******");
         return accessToken;
       }
     }
     else{ //the accessToken has been set
-      console.log("******case3******");
       return accessToken;
     }
   },
@@ -77,7 +74,6 @@ const Spotify = {
     /********check if there exists token in localStorage, and if it still validate*********/
     //case 1: no accessToken yet
     if(localStorage.getItem('token') === null){
-      console.log("case 00");
       accessToken = this.getAccessToken(keyWords);
     }
     else{
@@ -85,25 +81,21 @@ const Spotify = {
       var expiresIn = localStorage.getItem('token_expiresIn');
       if(expiresIn === undefined || expiresIn === null){
         expiresIn = 0;
-        console.log("case 10");
         accessToken = localStorage.getItem('token');
       }
       if(expiresIn < now){//expired
         //remove storage key
-        console.log("case 11, token expired!");
         localStorage.removeItem('token');
         localStorage.removeItem('token_expiresIn');
         accessToken = '';
         accessToken = this.getAccessToken(keyWords);
       } else{
-        console.log("case 12");
         // if(localStorage.getItem('searchedKeyWords') !== null)
         accessToken = localStorage.getItem('token');
       }
     }
     /**************************************/
     if(accessToken !== ''){
-    console.log("accessToken is: " + accessToken);
     const searchUrl = `https://api.spotify.com/v1/search?q=${keyWords}&type=${type}`;
     return fetch(searchUrl, {
       headers: {
@@ -143,7 +135,6 @@ const Spotify = {
   },
 
   getPlaylistId(){
-    console.log("I'm in getPlaylistId method");
     //Note that this scope alone will not return collaborative playlists, even though they are always private.
 //Private playlists are only retrievable for the current user and requires the playlist-read-private scope to have been authorized by the user.
 //Collaborative playlists are only retrievable for the current user and requires the playlist-read-collaborative scope to have been authorized by the user.

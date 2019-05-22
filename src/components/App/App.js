@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     const currentPlaylist = JSON.parse(localStorage.getItem('playlist'));
     //const currentPlaylist = localStorage.getItem('playist')? JSON.parse(localStorage.getItem('playist')):[];
-    console.dir( currentPlaylist);
+    // console.dir( currentPlaylist);
     this.state = {
       searchResults: [],
       // addedListInfo: [],
