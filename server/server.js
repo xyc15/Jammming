@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const favicon = require('express-favicon');
 const app = express();//create an express application
-const publicPath = path.join(__dirname, 'build');
+const publicPath = path.join(__dirname, '..', 'build');
 const port = process.env.PORT || 3000;//port provided by heroku
 
 app.use(favicon(__dirname + '/build/favicon.ico'));
