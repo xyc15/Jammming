@@ -21,6 +21,7 @@ it requires to: If node_modules exists, remove it with rm -rf node_modules and t
 
 const clientId = process.env.REACT_APP_CLIENT_ID;//unique identifier of your application
 const redirectUri = process.env.REACT_APP_REDIRECT_URL;
+console.log("redirectUri: " + redirectUri);
 const searchScope = 'playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative';//To be able to create private playlists, the user must have granted the  playlist-modify-private scope.
 //Private playlists are only retrievable for the current user and requires the playlist-read-private scope to have been authorized by the user.
 let accessToken = '';
